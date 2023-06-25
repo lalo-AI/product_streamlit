@@ -78,7 +78,7 @@ submit = st.button("Crear nuevo producto")
 
 # Once the name has submitted, upload it to the database
 if codigo and nombre and precio and existencias and stock_min and stock_max and submit:
-  doc_ref = db.collection("products").document(nombre)
+  doc_ref = db.collection("products").document()
   doc_ref.set ({
       "codigo": codigo,
       "nombre": nombre,
