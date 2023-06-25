@@ -17,12 +17,21 @@ db = firestore.client()
 dbProducts = db.collection(u"products")
 
 # ...
-def loadByProduct (nombre):
-  products_ref = dbProducts.where(u'nombre', u'==', nombre)
-  currentProduct = None
-  for myProduct in products_ref.stream():
-    currentProduct = myProduct
-  return currentProduct
+#def loadByProduct (nombre):
+#  products_ref = dbProducts.where(u'nombre', u'==', nombre)
+#  currentProduct = None
+#  for myProduct in products_ref.stream():
+#    currentProduct = myProduct
+#  return currentProduct
+
+def loadByProduct(nombre):
+    products_ref = db.collection(u'products').where(u'nombre', u'==', nombre).limit(1)
+    snapshot = products_ref.get()
+    if snapshot:
+        for doc in snapshot:
+            return doc.to_dict()
+    return None
+
 
 st.sidebar.subheader("Buscar Producto")
 nameSearch = st.sidebar.text_input("nombre")
