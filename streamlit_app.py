@@ -17,52 +17,24 @@ db = firestore.client()
 dbProducts = db.collection(u"products")
 
 # ...
-#def loadByProduct (nombre):
-#  products_ref = dbProducts.where(u'nombre', u'==', nombre)
-#  currentProduct = None
-#  for myProduct in products_ref.stream():
-#    currentProduct = myProduct
-#  return currentProduct
+def loadByProduct (nombre):
+  products_ref = dbProducts.where(u'nombre', u'==', nombre)
+  currentProduct = None
+  for myProduct in products_ref.stream():
+    currentProduct = myProduct
+  return currentProduct
 
-def loadByProduct(nombre):
-    products_ref = db.collection(u'products').where(u'nombre', u'==', nombre).limit(1).stream()
-    for doc in products_ref:
-        return doc.to_dict()
-    return None
-
-
-#def loadByProduct(nombre):
-#    products_ref = db.collection(u'products').where(u'nombre', u'==', nombre).limit(1)
-#    snapshot = products_ref.get()
-#    if snapshot:
-#        for doc in snapshot:
-#            return doc.to_dict()
-#    return None
 
 st.sidebar.subheader("Buscar Producto")
 nameSearch = st.sidebar.text_input("nombre")
 btnFiltrar = st.sidebar.button("Buscar")
 
-#product_name = st.text_input("Product Name")
 if btnFiltrar:
-  if nameSearch:
-    product = loadByProduct(nameSearch)
-    if product:
-        #st.write("Product found:")
-        st.siderbar.write(product)
+    doc = loadByProduct(nameSearch)
+    if doc is None:
+        st.sidebar.write("Nombre no existe")
     else:
-        st.sidebar.write("Product not found")
-
-#st.sidebar.subheader("Buscar Producto")
-#nameSearch = st.sidebar.text_input("nombre")
-#btnFiltrar = st.sidebar.button("Buscar")
-
-#if btnFiltrar:
-#  doc = loadByProduct(nameSearch)
-#  if doc is None:
-#  else:
-#    st.sidebar.write("Producto no existe")
-#    st.sidebar.write(doc.to_dict())
+        st.sidebar.write(doc.to_dict())
 
 # Codificar la eliminación de un documento, este proceso deberá probarse
 # después de la búsqueda del documento...
